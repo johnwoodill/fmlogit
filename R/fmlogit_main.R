@@ -82,7 +82,6 @@ Xclass = sapply(X,class)
 # Get factor and character columns
 Xfac = which(Xclass %in% c("factor","character"))
 
-# Check for categorical variables and generate dummies
 if( length(Xfac > 0)){
   Xfacnames = colnames(X)[Xfac]
   strformFac = paste(Xfacnames,collapse="+")
@@ -103,7 +102,9 @@ n = dim(X)[1]
 remove(xy)
 
 # remove pre-existing constant variables
-if( length(Xfac > 0 )) X = X[,sapply(X,function(x) length(unique(x))!=1)]
+if( length(Xfac > 0 )) {
+  X  = X[,apply(X, 2,function(x) length(unique(x))!=1)]
+}
 
 # add constant term if necessary
 X = cbind(X,rep(1,n))
